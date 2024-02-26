@@ -8,6 +8,7 @@ import com.example.unscramble.data.allWords
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import kotlinx.coroutines.flow.update
 
 class GameViewModel : ViewModel(){
     private val _uiState = MutableStateFlow(GameUiState())
@@ -44,5 +45,17 @@ class GameViewModel : ViewModel(){
     }
     fun updateUserGuess(guessedWord: String){
         userGuess = guessedWord
+    }
+    fun checkUserGuess() {
+
+        if (userGuess.equals(currentWord, ignoreCase = true)) {
+        } else {
+            // User's guess is wrong, show an error
+            _uiState.update { currentState ->
+                currentState.copy(isGuessedWordWrong = true)
+            }
+        }
+        // Reset user guess
+        updateUserGuess("")
     }
 }
